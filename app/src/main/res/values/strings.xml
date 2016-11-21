@@ -1,4 +1,33 @@
 <resources>
     <string name="app_name">JacksArrow</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_icon">IconActivity</string>
+
+    <string name="option_select">Choose objects</string>
+
+    <string-array name="objects">
+        <item>Fox</item>
+        <item>Link</item>
+        <item>Peach</item>
+        <item>Pikachu</item>
+        <item>Samus</item>
+        <item>Sheik</item>
+        <item>Pikmin</item>
+        <item>Kirby</item>
+        <item>Yoshi</item>
+        <item>Luigi</item>
+    </string-array>
+
+    <integer-array name="icon_options">
+        <item>@drawable/baseball</item>
+        <item>@drawable/basketball</item>
+        <item>@drawable/soccerball</item>
+        <item>@drawable/pinkflower</item>
+        <item>@drawable/purpleflower</item>
+        <item>@drawable/redflower</item>
+        <item>@drawable/cat</item>
+        <item>@drawable/dog</item>
+        <item>@drawable/kitten</item>
+        <item>@drawable/puppy</item>
+    </integer-array>
 </resources>

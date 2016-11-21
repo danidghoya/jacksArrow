@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_icon"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.daniela1.jacksarrow.IconActivity">
+
+    <ImageButton
+        android:id="@+id/basketballIcon"
+        android:src="@drawable/basketball"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@+id/baseballIcon"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="54dp"
+        android:layout_marginEnd="54dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="basketballIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/soccerballIcon"
+        android:src="@drawable/soccerball"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/baseballIcon"
+        android:layout_alignLeft="@+id/baseballIcon"
+        android:layout_alignStart="@+id/baseballIcon"
+        android:layout_marginTop="28dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="soccerballIconPressed"/>
+
+    <ImageView
+        android:id="@+id/PurpleFlowerIcon"
+        android:src="@drawable/purpleflower"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@+id/soccerballIcon"
+        android:layout_alignLeft="@+id/basketballIcon"
+        android:layout_alignStart="@+id/basketballIcon"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="purpleflowerIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/PinkFlowerIcon"
+        android:src="@drawable/pinkflower"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@+id/RedFlowerIcon"
+        android:layout_alignLeft="@+id/PurpleFlowerIcon"
+        android:layout_alignStart="@+id/PurpleFlowerIcon"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="pinkflowerIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/KittenIcon"
+        android:src="@drawable/kitten"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@+id/CatIcon"
+        android:layout_alignLeft="@+id/PinkFlowerIcon"
+        android:layout_alignStart="@+id/PinkFlowerIcon"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="kittenIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/RedFlowerIcon"
+        android:src="@drawable/redflower"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/soccerballIcon"
+        android:layout_alignLeft="@+id/soccerballIcon"
+        android:layout_alignStart="@+id/soccerballIcon"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="redflowerIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/CatIcon"
+        android:src="@drawable/cat"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/RedFlowerIcon"
+        android:layout_alignLeft="@+id/RedFlowerIcon"
+        android:layout_alignStart="@+id/RedFlowerIcon"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="catIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/PuppyIcon"
+        android:src="@drawable/puppy"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/KittenIcon"
+        android:layout_alignLeft="@+id/KittenIcon"
+        android:layout_alignStart="@+id/KittenIcon"
+        android:layout_marginTop="12dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="puppyIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/DogIcon"
+        android:src="@drawable/dog"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/KittenIcon"
+        android:layout_alignLeft="@+id/CatIcon"
+        android:layout_alignStart="@+id/CatIcon"
+        android:layout_marginTop="12dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="dogIconPressed"/>
+
+    <ImageButton
+        android:id="@+id/baseballIcon"
+        android:src="@drawable/baseball"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginStart="48dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="baseballIconPressed"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:text="Choose Your Avatar"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_above="@+id/basketballIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
+
+</RelativeLayout>
