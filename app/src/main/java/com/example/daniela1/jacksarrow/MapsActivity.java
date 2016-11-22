@@ -3,6 +3,8 @@ package com.example.daniela1.jacksarrow;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -20,11 +22,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -39,6 +49,8 @@ public class MapsActivity extends AppCompatActivity
     Location mLastLocation;
     Marker mCurrLocationMarker;
 
+    public Handler mHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -51,6 +63,20 @@ public class MapsActivity extends AppCompatActivity
 
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                //code that unpacks striing into location and array int index
+                System.out.println("Got message!");
+            }
+        };
+
+        SendingMessages sM = new SendingMessages();
+        Thread sendThread = new Thread(sM);
+        sendThread.start();
+
     }
 
     @Override
@@ -206,6 +232,32 @@ public class MapsActivity extends AppCompatActivity
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+
+    private class SendingMessages implements Runnable {
+        private Socket sock;
+
+        public void run() {
+            try {
+                //contains latitude and longitude, and int index of image
+                String message = "";
+
+                message = "" + mLastLocation.getLatitude() + " " + mLastLocation.getLongitude();
+
+                sock = new Socket("pedagogy.cs-georgetown.net", 12012);
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
+                while(true) {
+                    writer.println(message);
+                    writer.flush();
+                    Thread.sleep(500);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
