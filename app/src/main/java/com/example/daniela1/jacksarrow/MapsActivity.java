@@ -3,8 +3,6 @@ package com.example.daniela1.jacksarrow;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -22,19 +20,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
@@ -49,7 +40,8 @@ public class MapsActivity extends AppCompatActivity
     Location mLastLocation;
     Marker mCurrLocationMarker;
 
-    public Handler mHandler;
+    int imId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,18 +56,7 @@ public class MapsActivity extends AppCompatActivity
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                //code that unpacks striing into location and array int index
-                System.out.println("Got message!");
-            }
-        };
-
-        SendingMessages sM = new SendingMessages();
-        Thread sendThread = new Thread(sM);
-        sendThread.start();
+        imId = IconActivity.iconNum;
 
     }
 
@@ -151,7 +132,48 @@ public class MapsActivity extends AppCompatActivity
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        System.out.print(imId);
+        if (imId == 1)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseball));
+            System.out.println("We got here");
+        }
+        if (imId == 2)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball));
+        }
+        if (imId == 3)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.soccerball));
+        }
+        if (imId == 4)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.pinkflower));
+        }
+        if (imId == 5)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.purpleflower));
+        }
+        if (imId == 6)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.redflower));
+        }
+        if (imId == 7)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.cat));
+        }
+        if (imId == 8)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.dog));
+        }
+        if (imId == 9)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.kitten));
+        }
+        if (imId == 10)
+        {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.puppy));
+        }
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
@@ -227,38 +249,24 @@ public class MapsActivity extends AppCompatActivity
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
 
-    private class SendingMessages implements Runnable {
-        private Socket sock;
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
-        public void run() {
-            try {
-                //contains latitude and longitude, and int index of image
-                String message = "";
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
-                message = "" + mLastLocation.getLatitude() + " " + mLastLocation.getLongitude();
-
-                sock = new Socket("pedagogy.cs-georgetown.net", 12012);
-                PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
-                while(true) {
-                    writer.println(message);
-                    writer.flush();
-                    Thread.sleep(500);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
 }

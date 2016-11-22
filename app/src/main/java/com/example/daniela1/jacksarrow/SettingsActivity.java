@@ -9,9 +9,7 @@ import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Spinner spinner;
     private String[] listOfObjects;
-    private int[] images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +18,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         listOfObjects = getResources().getStringArray(R.array.objects);
-        images = getResources().getIntArray(R.array.icon_options);
         int[] images1 = {R.drawable.baseball, R.drawable.basketball, R.drawable.soccerball, R.drawable.pinkflower,
                    R.drawable.purpleflower, R.drawable.redflower, R.drawable.cat, R.drawable.dog, R.drawable.kitten, R.drawable.puppy};
 
-        spinner = (Spinner) findViewById(R.id.spinner1);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner1);
 
         Adapter adapter = new Adapter(this, listOfObjects, images1);
         spinner.setAdapter(adapter);
@@ -40,7 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
