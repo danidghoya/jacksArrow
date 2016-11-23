@@ -3,6 +3,9 @@ package com.example.daniela1.jacksarrow;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -20,11 +23,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 
 
 public class MapsActivity extends AppCompatActivity
@@ -39,6 +51,8 @@ public class MapsActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
+
+    public Handler mHandler;
 
     int imId;
 
@@ -57,6 +71,24 @@ public class MapsActivity extends AppCompatActivity
         mapFrag.getMapAsync(this);
 
         imId = IconActivity.iconNum;
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+//                TextView t = (TextView)findViewById(R.id.textView);
+//                t.setText("Hi");
+                System.out.println("Got message!");
+            }
+        };
+
+        SendTest sTest = new SendTest();
+        Thread sendThread = new Thread(sTest);
+        sendThread.start();
+
+        ReceiveTest rTest = new ReceiveTest();
+        Thread receiveThread = new Thread(rTest);
+        receiveThread.start();
 
     }
 
@@ -127,6 +159,7 @@ public class MapsActivity extends AppCompatActivity
             mCurrLocationMarker.remove();
         }
 
+
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
@@ -174,11 +207,12 @@ public class MapsActivity extends AppCompatActivity
         {
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.puppy));
         }
+
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(7));
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -257,6 +291,15 @@ public class MapsActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkLocationPermission();
+        }
+
+        mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
+
+        imId = IconActivity.iconNum;
     }
 
     @Override
@@ -269,4 +312,46 @@ public class MapsActivity extends AppCompatActivity
         super.onRestart();
     }
 
+    protected void createRandomLocation()
+    {
+
+    }
+
+    class SendTest implements Runnable {
+        public void run() {
+            try {
+                InetAddress serverAddr = InetAddress.getByName("pedagogy.cs-georgetown.net");
+                Socket sock = new Socket(serverAddr,12012);
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
+                while(true) {
+                    writer.println("hi");
+                    writer.flush();
+                    Thread.sleep(500);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ReceiveTest implements Runnable {
+        private Socket sock;
+        private BufferedReader reader;
+
+        public void run() {
+            try {
+                String line;
+                sock = new Socket("pedagogy.cs-georgetown.net", 12012);
+                reader = new BufferedReader(new
+                        InputStreamReader(sock.getInputStream()));
+                while ((line = reader.readLine()) != null) {
+                    Message message = Message.obtain();
+                    message.setTarget(mHandler);
+                    message.sendToTarget();;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
