@@ -24,19 +24,6 @@
         android:adjustViewBounds="true"
         android:onClick="basketballIconPressed"/>
 
-    <ImageButton
-        android:id="@+id/soccerballIcon"
-        android:src="@drawable/soccerball"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_below="@+id/baseballIcon"
-        android:layout_alignLeft="@+id/baseballIcon"
-        android:layout_alignStart="@+id/baseballIcon"
-        android:layout_marginTop="28dp"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:onClick="soccerballIconPressed"/>
-
     <ImageView
         android:id="@+id/PurpleFlowerIcon"
         android:src="@drawable/purpleflower"
@@ -72,19 +59,6 @@
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:onClick="kittenIconPressed"/>
-
-    <ImageButton
-        android:id="@+id/RedFlowerIcon"
-        android:src="@drawable/redflower"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/soccerballIcon"
-        android:layout_alignLeft="@+id/soccerballIcon"
-        android:layout_alignStart="@+id/soccerballIcon"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:onClick="redflowerIconPressed"/>
 
     <ImageButton
         android:id="@+id/CatIcon"
@@ -126,19 +100,30 @@
         android:onClick="dogIconPressed"/>
 
     <ImageButton
-        android:id="@+id/baseballIcon"
-        android:src="@drawable/baseball"
+        android:id="@+id/soccerballIcon"
+        android:src="@drawable/soccerball"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginTop="11dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="baseballIconPressed"/>
+        android:onClick="soccerballIconPressed"
+        android:layout_below="@+id/baseballIcon"
+        android:layout_alignLeft="@+id/baseballIcon"
+        android:layout_alignStart="@+id/baseballIcon" />
+
+    <ImageButton
+        android:id="@+id/RedFlowerIcon"
+        android:src="@drawable/redflower"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="redflowerIconPressed"
+        android:layout_below="@+id/soccerballIcon"
+        android:layout_alignLeft="@+id/soccerballIcon"
+        android:layout_alignStart="@+id/soccerballIcon" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -146,8 +131,22 @@
         android:id="@+id/textView"
         android:text="Choose Your Avatar"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:layout_above="@+id/basketballIcon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:id="@+id/baseballIcon"
+        android:src="@drawable/baseball"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="51dp"
+        android:layout_marginStart="51dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:onClick="baseballIconPressed"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

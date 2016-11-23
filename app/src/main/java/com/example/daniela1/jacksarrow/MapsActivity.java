@@ -12,12 +12,14 @@ import android.os.Bundle;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -29,6 +31,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,6 +41,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.StringTokenizer;
 
 
 public class MapsActivity extends AppCompatActivity
@@ -53,9 +58,13 @@ public class MapsActivity extends AppCompatActivity
     Marker mCurrLocationMarker;
     Marker randomMarker;
 
-    public Handler mHandler;
+//    public Handler mHandler;
 
     int imId;
+
+    Double latDb = 0.0;
+    Double lngDb = 0.0;
+    int intInd;
 
 
     @Override
@@ -83,15 +92,13 @@ public class MapsActivity extends AppCompatActivity
 
         imId = IconActivity.iconNum;
 
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-//                TextView t = (TextView)findViewById(R.id.textView);
-//                t.setText("Hi");
-                System.out.println("Got message!");
-            }
-        };
+//        mHandler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                super.handleMessage(msg);
+//                System.out.print("Hello");
+//            }
+//        };
 
         SendTest sTest = new SendTest();
         Thread sendThread = new Thread(sTest);
@@ -176,19 +183,17 @@ public class MapsActivity extends AppCompatActivity
             mCurrLocationMarker.remove();
         }
 
-        //random marker to test lines
-        LatLng sydney = new LatLng(-122.26, 37.65);
-        MarkerOptions markerOptions1 = new MarkerOptions();
-        markerOptions1.position(sydney);
-        markerOptions1.title("Sydney");
-
-
-
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
+
+        //random marker to test lines
+        LatLng sydney = new LatLng(latDb, lngDb);
+        MarkerOptions markerOptions1 = new MarkerOptions();
+        markerOptions1.position(sydney);
+        markerOptions1.title("Sydney");
 
         if (imId == 1)
         {
@@ -232,12 +237,67 @@ public class MapsActivity extends AppCompatActivity
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.puppy));
         }
 
+        if (intInd == 1)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.baseball));
+        }
+        if (intInd == 2)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.basketball));
+        }
+        if (intInd == 3)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.soccerball));
+        }
+        if (intInd == 4)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.pinkflower));
+        }
+        if (intInd == 5)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.purpleflower));
+        }
+        if (intInd == 6)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.redflower));
+        }
+        if (intInd == 7)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.cat));
+        }
+        if (intInd == 8)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.dog));
+        }
+        if (intInd == 9)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.kitten));
+        }
+        if (intInd == 10)
+        {
+            markerOptions1.icon(BitmapDescriptorFactory.fromResource(R.drawable.puppy));
+        }
+
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
         randomMarker = mGoogleMap.addMarker(markerOptions1);
 
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(markerOptions.getPosition());
+        builder.include(markerOptions1.getPosition());
+        LatLngBounds bounds = builder.build();
+
+        int padding = 400;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(7));
+        mGoogleMap.moveCamera(cu);
+//        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(7));
+
+        PolylineOptions line = new PolylineOptions()
+                .add(sydney)
+                .add(latLng);
+
+        Polyline polyline = mGoogleMap.addPolyline(line);
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -334,11 +394,24 @@ public class MapsActivity extends AppCompatActivity
     class SendTest implements Runnable {
         public void run() {
             try {
+                //Make the necessary strings to add onto the stringToSend
+                Double latDouble = mLastLocation.getLatitude();
+                String latString = latDouble.toString();
+                Double lngDouble = mLastLocation.getLongitude();
+                String lngString = lngDouble.toString();
+
+                String infoToSend = "";
+                infoToSend.concat(latString);
+                infoToSend.concat(" ");
+                infoToSend.concat(lngString);
+                infoToSend.concat(" " + imId);
+
+
                 InetAddress serverAddr = InetAddress.getByName("pedagogy.cs-georgetown.net");
                 Socket sock = new Socket(serverAddr,12012);
                 PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
                 while(true) {
-                    writer.println("hi");
+                    writer.println(infoToSend);
                     writer.flush();
                     Thread.sleep(500);
                 }
@@ -355,13 +428,27 @@ public class MapsActivity extends AppCompatActivity
         public void run() {
             try {
                 String line;
+
                 sock = new Socket("pedagogy.cs-georgetown.net", 12012);
                 reader = new BufferedReader(new
                         InputStreamReader(sock.getInputStream()));
                 while ((line = reader.readLine()) != null) {
-                    Message message = Message.obtain();
-                    message.setTarget(mHandler);
-                    message.sendToTarget();;
+
+                    StringTokenizer st = new StringTokenizer(line);
+                    String latSt = "";
+                    String lngSt = "";
+                    String intIndex = "";
+
+                    while (st.hasMoreElements())
+                    {
+                        latSt = st.nextToken();
+                        lngSt = st.nextToken();
+                        intIndex = st.nextToken();
+                    }
+
+                    latDb = Double.parseDouble(latSt);
+                    lngDb = Double.parseDouble(lngSt);
+                    intInd = Integer.parseInt(intIndex);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
